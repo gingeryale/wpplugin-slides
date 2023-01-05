@@ -8,8 +8,9 @@ if (!class_exists('MV_Slider_Post_Type')) {
             add_action('init', array($this, 'create_post_type'));
             add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
             add_action('save_post', array($this, 'save_post'), 10, 2);
-            add_filter('manage_mv-slider_post_columns', array($this, 'mv_slider_cpt_columns'));
-            add_action('manage_mv-slider_post_custom_column', array($this, 'mv_slider_custom_column', 10, 2));
+            add_filter('manage_mv-slider_posts_columns', array($this, 'mv_slider_cpt_columns'));
+            add_action('manage_mv-slider_posts_custom_column', array($this, 'mv_slider_custom_columns'), 10, 2);
+            add_filter('manage_edit-mv-slider_sortable_columns', array($this, 'mv_slider_custom_columns_sortable'));
         }
         public function create_post_type()
         {
@@ -47,16 +48,21 @@ if (!class_exists('MV_Slider_Post_Type')) {
             $columns['mv_slider_link_url'] = esc_html__('Link URL', 'mv-slider');
             return $columns;
         }
-        public function mv_slider_custom_column($column, $post_id)
+        public function mv_slider_custom_columns($column, $post_id)
         {
             switch ($column) {
                 case 'mv_slider_link_text':
-                    echo esc_html__(get_post_meta($post_id, 'mv_slider_link_text', true));
+                    echo esc_html(get_post_meta($post_id, 'mv_slider_link_text', true));
                     break;
                 case 'mv_slider_link_url':
-                    echo esc_html__(get_post_mta($post_id, 'mv_slider_link_url', true));
+                    echo esc_url(get_post_meta($post_id, 'mv_slider_link_url', true));
                     break;
             }
+        }
+        public function mv_slider_custom_columns_sortable($cols)
+        {
+            $cols['mv_slider_link_text'] = 'mv_slider_link_text';
+            return $cols;
         }
         public function add_meta_boxes()
         {
@@ -95,18 +101,18 @@ if (!class_exists('MV_Slider_Post_Type')) {
                 $old_link_text = get_post_meta($post_id, 'mv_slider_link_text', true);
                 $new_link_text = sanitize_text_field($_POST['mv_slider_link_text']);
                 $old_link_url = get_post_meta($post_id, 'mv_slider_link_url', true);
-                $new_link_url = esc_url_raw($_POST['mv_slider_link_url']);
+                $new_link_url = $_POST['mv_slider_link_url'];
 
-                if (empty(new_link_text)) {
+                if (empty($new_link_text)) {
                     update_post_meta($post_id, 'mv_slider_link_text', 'Add some text');
                 } else {
                     update_post_meta($post_id, 'mv_slider_link_text', $new_link_text, $old_link_text);
                 }
 
-                if (empty(new_link_url)) {
-                    update_post_meta($post_id, 'mv_slider_link_url', "#");
+                if (empty($new_link_url)) {
+                    update_post_meta($post_id, 'mv_slider_link_url', "https://");
                 } else {
-                    update_post_meta($post_id, 'mv_slider_link_url', $new_link_url, $old_link_url);
+                    update_post_meta($post_id, 'mv_slider_link_url', sanitize_text_field($new_link_url), $old_link_url);
                 }
             }
         }

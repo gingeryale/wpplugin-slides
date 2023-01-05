@@ -7,7 +7,7 @@ $link_text = get_post_meta($post->ID, 'mv_slider_link_text', true);
 $link_url = get_post_meta($post->ID, 'mv_slider_link_url', true);
 ?>
 <table class="form-table mv-slider-metabox">
-    <input type="hidden" name="mv_slider_nonce" value="<?php echo wp_create_nonce("mv_slider_nonce"); ?>" />
+    <input type="hidden" name="mv_slider_nonce" value="<?php echo wp_create_nonce('mv_slider_nonce'); ?>" />
     <tbody>
         <tr>
             <th>
