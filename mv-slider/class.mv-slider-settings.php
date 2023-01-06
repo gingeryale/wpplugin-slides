@@ -1,0 +1,38 @@
+<?php
+
+if (!class_exists('MV_Slider_Settings')) {
+    class MV_Slider_Settings
+    {
+        public static $options;
+        public function __construct()
+        {
+            self::$options = get_option('mv_slider_options');
+            add_action('admin_init', array($this, 'admin_init'));
+        }
+        public function admin_init()
+        {
+            register_setting('mv_slider_group', 'mv_slider_options');
+            add_settings_section(
+                'mv_slider_main_section',
+                'How it works?',
+                null,
+                'mv_slider_page1'
+            );
+
+            add_settings_field(
+                'mv_slider_shortcode',
+                'Shortcode',
+                array($this, 'mv_slider_shortcode_callback'),
+                'mv_slider_page1',
+                'mv_slider_main_section',
+            );
+        }
+        public function mv_slider_shortcode_callback()
+        {
+?>
+            <span>USe Shortcod [mv_sider] to display the slider in any page/post/wigit</span>
+<?php
+
+        }
+    }
+}
