@@ -39,6 +39,13 @@ if (!class_exists('MV_Slider_Settings')) {
                 'mv_slider_page2',
                 'mv_slider_second_section',
             );
+               add_settings_field(
+                'mv_slider_bullets',
+                'Slider Bullets',
+                array($this, 'mv_slider_bullets_callback'),
+                'mv_slider_page2',
+                'mv_slider_second_section',
+            );
         }
         public function mv_slider_shortcode_callback()
         {
@@ -55,6 +62,22 @@ if (!class_exists('MV_Slider_Settings')) {
             id="mv_slider_title"
             value="<?php echo isset(self::$options['mv_slider_title']) ? esc_attr(self::$options['mv_slider_title]) : ''; ?>"
             >
+            <?php
+        }
+        public function mv_slider_bullets_callback(){
+            ?>
+            <input
+            type="checkbox"
+            name="mv_slider_options[mv_slider_bullets]"
+            id="mv_slider_bullets"
+            value="1"
+            <?php 
+            if(isset(self::$options['mv_slider_bullets'])){
+                checked("1", self::$options['mv_slider_bullets'], true);
+            }
+            ?>
+            >
+            <label for="mv_slider_bullets">Whether to display bullets by slide</label>
             <?php
         }
     }
