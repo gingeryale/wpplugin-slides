@@ -18,6 +18,12 @@ if (!class_exists('MV_Slider_Settings')) {
                 null,
                 'mv_slider_page1'
             );
+             add_settings_section(
+                'mv_slider_second_section',
+                'Other Plugin Options',
+                null,
+                'mv_slider_page2'
+            );
 
             add_settings_field(
                 'mv_slider_shortcode',
@@ -26,6 +32,13 @@ if (!class_exists('MV_Slider_Settings')) {
                 'mv_slider_page1',
                 'mv_slider_main_section',
             );
+             add_settings_field(
+                'mv_slider_title',
+                'Slider Title',
+                array($this, 'mv_slider_title_callback'),
+                'mv_slider_page2',
+                'mv_slider_second_section',
+            );
         }
         public function mv_slider_shortcode_callback()
         {
@@ -33,6 +46,16 @@ if (!class_exists('MV_Slider_Settings')) {
             <span>USe Shortcod [mv_sider] to display the slider in any page/post/wigit</span>
 <?php
 
+        }
+        public function mv_slider_title_callback(){
+            ?>
+            <input 
+            type="text"
+            name="mv_slider_option[mv_slider_title]"
+            id="mv_slider_title"
+            value="<?php echo isset(self::$options['mv_slider_title']) ? esc_attr(self::$options['mv_slider_title]) : ''; ?>"
+            >
+            <?php
         }
     }
 }
