@@ -38,6 +38,9 @@ if (!class_exists('MV_Slider_Settings')) {
                 array($this, 'mv_slider_title_callback'),
                 'mv_slider_page2',
                 'mv_slider_second_section',
+                array(
+                    'label_for' => 'mv_slider_title'
+                )
             );
             add_settings_field(
                 'mv_slider_bullets',
@@ -45,6 +48,9 @@ if (!class_exists('MV_Slider_Settings')) {
                 array($this, 'mv_slider_bullets_callback'),
                 'mv_slider_page2',
                 'mv_slider_second_section',
+                array(
+                    'label_for' => 'mv_slider_bullets'
+                )
             );
             add_settings_field(
                 'mv_slider_style',
@@ -52,6 +58,13 @@ if (!class_exists('MV_Slider_Settings')) {
                 array($this, 'mv_slider_style_callback'),
                 'mv_slider_page2',
                 'mv_slider_second_section',
+                array(
+                    'items' => array(
+                        'style-1',
+                        'style-2'
+                    ),
+                    'label_for' => 'mv_slider_style'
+                )
             );
         }
         public function mv_slider_shortcode_callback()
@@ -61,13 +74,13 @@ if (!class_exists('MV_Slider_Settings')) {
         <?php
 
         }
-        public function mv_slider_title_callback()
+        public function mv_slider_title_callback($args)
         {
         ?>
             <input type="text" name="mv_slider_options[mv_slider_title]" id="mv_slider_title" value="<?php echo isset(self::$options['mv_slider_title']) ? esc_attr(self::$options['mv_slider_title']) : ''; ?>">
         <?php
         }
-        public function mv_slider_bullets_callback()
+        public function mv_slider_bullets_callback($args)
         {
         ?>
             <input type="checkbox" name="mv_slider_options[mv_slider_bullets]" id="mv_slider_bullets" value="1" <?php
@@ -78,14 +91,22 @@ if (!class_exists('MV_Slider_Settings')) {
             <label for="mv_slider_bullets">Whether to display bullets by slide</label>
         <?php
         }
-        public function mv_slider_style_callback()
+        public function mv_slider_style_callback($args)
         {
         ?>
             <select id="mv_slider_style" name="mv_slider_options[mv_slider_style]">
-                <option value="style-1" <?php isset(self::$options['mv_slider_style']) ? selected('style-1', self::$options['mv_slider_style'], true) : ''; ?>>Style-1</option>
-                <option value="style-2" <?php isset(self::$options['mv_slider_style']) ? selected('style-2', self::$options['mv_slider_style'], true) : ''; ?>>Style-2</option>
-
+                <!-- <option value="style-1" <?php isset(self::$options['mv_slider_style']) ? selected('style-1', self::$options['mv_slider_style'], true) : ''; ?>>Style-1</option>
+                <option value="style-2" <?php isset(self::$options['mv_slider_style']) ? selected('style-2', self::$options['mv_slider_style'], true) : ''; ?>>Style-2</option> -->
+                <?php
+                foreach ($args['items'] as $item) :
+                ?>
+                    <option value="<?php echo esc_attr($item); ?>" <?php isset(self::$options['mv_slider_style']) ? selected($item, self::$options['mv_slider_style'], true) : ''; ?>>
+                        <?php echo esc_html(ucfirst($item)); ?>
+                    </option>
+                <?php
+                endforeach; ?>
             </select>
+
 <?php
         }
     }
