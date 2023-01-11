@@ -1,20 +1,39 @@
+<?php echo (!empty($content)) ? esc_html($content) : esc_html(MV_Slider_Settings::$options['mv_slider_title']); ?>
 <h3>Title</h3>
 <div class="mv-slider flexslider">
     <ul class="slides">
-        <li>
-            <div class="mvs-container">
-                <div class="slider-details-container">
-                    <div class="wrapper">
-                        <div class="slider-title">
-                            <h2>Slider Title</h2>
-                        </div>
-                        <div class="slider-description">
-                            <div class="subtitle"></div>
-                            <a href="#" class="link">Button text</a>
+        <?php
+        $args = array(
+            'post_type' => 'mv-slider',
+            'post_status' => 'publish',
+            'post__in' => $id,
+            'orderby' => $orderby
+        );
+        $plugin_query = new WP_Query($args);
+        if ($plugin_query->have_posts()) :
+            while ($plugin_query->have_posts()) : $plugin_query->the_post();
+                $button_text = get_post_meta(get_the_ID(), 'mv_slider_link_text', true);
+                $button_url = get_post_meta(get_the_ID(), 'mv_slider_link_url', true);
+        ?>
+                <li>
+                    <?php the_post_thumbnail('full', array('class' => 'img-fluid')); ?>
+                    <div class="mvs-container">
+                        <div class="slider-details-container">
+                            <div class="wrapper">
+                                <div class="slider-title">
+                                    <h2><?php the_title(); ?></h2>
+                                </div>
+                                <div class="slider-description">
+                                    <div class="subtitle"><?php the_content(); ?></div>
+                                    <a href="<?php echo esc_url($button_url); ?>" class="link"><?php echo esc_html($button_text); ?></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </li>
+                </li>
+        <?php endwhile;
+            wp_reset_postdata();
+        endif;
+        ?>
     </ul>
 </div>
