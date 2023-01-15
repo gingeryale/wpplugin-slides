@@ -3,6 +3,6 @@ jQuery(window).load(function () {
         animation: "slider",
         touch: true,
         directionNav: true,
-        controlNav: true,
+        controlNav: SLIDER_OPTIONS.controlNav,
     });
 });
