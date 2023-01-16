@@ -22,6 +22,7 @@ if (!class_exists('MV_Slider')) {
         function __construct()
         {
             $this->define_constants();
+            $this->load_textdomain();
 
             require_once(MV_SLIDER_PATH . 'functions/functions.php');
 
@@ -114,6 +115,14 @@ if (!class_exists('MV_Slider')) {
             if ($typenow == 'mv-slider') {
                 wp_register_style('mv-slider-admin-css', MV_SLIDER_URL . 'assets/css/admin.css');
             }
+        }
+        public function load_textdomain()
+        {
+            load_plugin_textdomain(
+                'mv-slider',
+                false,
+                dirname(plugin_basename(__FILE__)) . '/languages'
+            );
         }
     }
 }
