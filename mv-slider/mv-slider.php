@@ -63,7 +63,7 @@ if (!class_exists('MV_Slider')) {
         {
             add_menu_page(
                 // add_plugins_page, add_themes_page
-                'MV Slider Options',
+                __('MV Slider Options', 'mv-slider'),
                 'MV Slider',
                 'manage_options',
                 'mv_slider_admin',
@@ -72,8 +72,8 @@ if (!class_exists('MV_Slider')) {
             );
             add_submenu_page(
                 'mv_slider_admin',
-                'Manage Slides',
-                'Manage Slides',
+                __('Manage Slides', 'mv-slider'),
+                __('Manage Slides', 'mv-slider'),
                 'manage_options',
                 'edit.php?post_type=mv-slider',
                 null,
@@ -81,8 +81,8 @@ if (!class_exists('MV_Slider')) {
             );
             add_submenu_page(
                 'mv_slider_admin',
-                'Manage New Slide',
-                'Manage New Slide',
+                __('Add New Slide', 'mv-slider'),
+                __('Add New Slide', 'mv-slider'),
                 'manage_options',
                 'post-new.php?post_type=mv-slider',
                 null,
@@ -95,7 +95,7 @@ if (!class_exists('MV_Slider')) {
                 return;
             }
             if (isset($_GET['settings-updated'])) {
-                add_settings_error('mv_slider_options', 'mv_slider_message', 'Settings Saved', 'success');
+                add_settings_error('mv_slider_options', 'mv_slider_message', __('Settings Saved', 'mv-slider'), 'success');
             }
             settings_errors('mv_slider_options');
             require(MV_SLIDER_PATH . 'views/settings-page.php');
